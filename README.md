@@ -22,7 +22,7 @@ yum install -y epel-release
 
 yum install strongswan openvpn
 
-附上打包好的rpm包[下载地址](https://github.com/Ostaer/FlexGW/tree/master/packaging/rpm/flexgw-1.1.0-1.el7.centos.x86_64.rpm)
+附上打包好的rpm包[下载地址](https://github.com/Ostaer/FlexGW/releases/download/v1.1/flexgw-1.1.0-1.el7.centos.x86_64.rpm)
 
 自己编译
 ```

@@ -2,7 +2,7 @@
 
 
 #flexgw_refs="v1.0.0"
-flexgw_refs="origin/develop"
+flexgw_refs="origin/master"
 package_name="flexgw"
 flexgw_version="1.1.0"
 flexgw_release="1"
