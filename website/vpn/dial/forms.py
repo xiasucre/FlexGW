@@ -84,4 +84,4 @@ class ConsoleForm(Form):
     #: submit button
     stop = SubmitField(u'关闭')
     start = SubmitField(u'启动')
-    re_load = SubmitField(u'下发&重载')
+    re_load = SubmitField(u'下发&重启')

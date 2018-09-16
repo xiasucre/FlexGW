@@ -109,7 +109,7 @@ class VpnConfig(object):
 class VpnServer(object):
     """vpn server console"""
     log_file = '/etc/openvpn/openvpn-status.log'
-    pid_file = '/var/run/openvpn/server.pid'
+    pid_file = '/var/run/openvpn-server/server.pid'
 
     def __init__(self):
         self.cmd = None
@@ -144,7 +144,7 @@ class VpnServer(object):
         return False
 
     def _reload_conf(self):
-        cmd = ['service', 'openvpn', 'reload']
+        cmd = ['systemctl', 'restart', 'openvpn-server@server']
         message = u"VPN 服务重载失败！%s"
         return self._exec(cmd, message)
 
@@ -158,7 +158,7 @@ class VpnServer(object):
         if self.status:
             flash(u'服务已经启动！', 'info')
             return False
-        cmd = ['service', 'openvpn', 'start']
+        cmd = ['systemctl', 'start', 'openvpn-server@server']
         message = u"VPN 服务启动失败！%s"
         return self._exec(cmd, message)
 
@@ -167,7 +167,7 @@ class VpnServer(object):
         if not self.status:
             flash(u'服务已经停止！', 'info')
             return False
-        cmd = ['service', 'openvpn', 'stop']
+        cmd = ['systemctl', 'stop', 'openvpn-server@server']
         message = u"VPN 服务停止失败！%s"
         return self._exec(cmd, message)
 
@@ -188,6 +188,7 @@ class VpnServer(object):
 
     @property
     def status(self):
+        current_app.logger.info("检查PID {}".format(self.pid_file))
         if not os.path.isfile(self.pid_file):
             return False
 

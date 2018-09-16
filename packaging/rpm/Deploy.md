@@ -4,7 +4,7 @@ Flex GateWay Deploy
 环境要求
 -------
 
-OS: Centos 6.5/RHEL 6/AliOS 6.2
+OS: Centos 7.x
 
 注：请以root 身份执行下面步骤的命令。
 
@@ -37,15 +37,8 @@ OS: Centos 6.5/RHEL 6/AliOS 6.2
 安装flexgw rpm 包
 ----------------
 
-1. rpm -ivh flexgw-1.1.0-1.el6.x86_64.rpm
+1. rpm -ivh flexgw-1.1.0-1.el7.centos.x86_64.rpm
 
-设置开机启动（废弃）
-----------------
-
-注意：请不要在镜像里设置开机启动，因为此时flexgw 还未初始化，导致openvpn、strongswan 启动失败。
-
-1. chkconfig strongswan off
-2. chkconfig openvpn off
 
 
 初始化配置
@@ -56,7 +49,7 @@ OS: Centos 6.5/RHEL 6/AliOS 6.2
 
 2. 初始化openvpn 配置文件：
 
-    cp -fv /usr/local/flexgw/rc/openvpn.conf /etc/openvpn/server.conf
+    cp -fv /usr/local/flexgw/rc/openvpn.conf /etc/openvpn/server/server.conf
 
 设置strongswan
 --------------
@@ -94,7 +87,7 @@ OS: Centos 6.5/RHEL 6/AliOS 6.2
 
 测试的话，请不要执行「设置flexgw」步骤。仅手工执行以下命令：
 
-/etc/init.d/initflexgw
+/etc/init.d/initflexgw (喝杯茶休息下。。。)
 
 大约10秒左右，flexgw 就会自动配置好，并启动。启动完毕之后，访问`https://公网IP` 即可看到登录界面。
 
@@ -102,4 +95,4 @@ OS: Centos 6.5/RHEL 6/AliOS 6.2
 
 1. /etc/init.d/flexgw stop
 2. rpm -e flexgw && rpm -rf /usr/local/flexgw/
-3. rpm -ivh flexgw-1.1.0-1.el6.x86_64.rpm
+3. rpm -ivh flexgw-1.1.0-1.el7.centos.x86_64.rpm

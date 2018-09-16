@@ -8,11 +8,13 @@
 
 
 import subprocess
+from flask import current_app
 
 from threading import Timer
 
 
 def exec_command(cmd, timeout=5, stdout=subprocess.PIPE):
+    current_app.logger.info("执行命令 => {}".format(cmd))
     proc = subprocess.Popen(cmd, stdout=stdout,
                             stderr=subprocess.PIPE)
     # settings exec timeout
@@ -20,5 +22,7 @@ def exec_command(cmd, timeout=5, stdout=subprocess.PIPE):
     timer.start()
     stdout, stderr = proc.communicate()
     timer.cancel()
+    current_app.logger.info("命令结果 => {}".format({'return_code': proc.returncode, 'stdout': stdout,
+            'stderr': stderr}))
     return {'return_code': proc.returncode, 'stdout': stdout,
             'stderr': stderr}
