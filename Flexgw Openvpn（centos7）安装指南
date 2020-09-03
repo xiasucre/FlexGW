@@ -1,0 +1,120 @@
+## Flexgw Openvpn（centos7）安装指南
+
+### 环境要求
+
+​	OS: Centos 7.x
+
+​	注：请以root 身份执行下面步骤的命令。
+
+### 设置系统环境
+
+​	编辑/etc/sysctl.conf 文件：
+
+```
+sysctl -a | egrep "ipv4.*(accept|send)_redirects" | awk -F "=" '{print $1"= 0"}' >> /etc/sysctl.conf
+sed -i 's/^net.ipv4.ip_forward.*//g' /etc/sysctl.conf
+echo "net.ipv4.ip_forward = 1">> /etc/sysctl.conf
+sysctl -p
+```
+
+### 安装依赖的软件包
+
+​	更新yum仓库并安装软件
+
+```
+yum makecache fast
+yum install strongswan openvpn zip curl wget
+```
+
+### 安装flexgw rpm 包
+
+```
+wget https://github.com/Ostaer/FlexGW/releases/download/v1.1/flexgw-1.1.0-1.el7.centos.x86_64.rpm
+rpm -ivh flexgw-1.1.0-1.el7.centos.x86_64.rpm
+```
+
+### 初始化配置
+
+1. 初始化strongswan 配置文件：
+
+   ```
+   \cp -fv /usr/local/flexgw/rc/strongswan.conf /etc/strongswan/strongswan.conf
+   ```
+
+2. 初始化openvpn 配置文件：
+
+   ```
+   \cp -fv /usr/local/flexgw/rc/openvpn.conf /etc/openvpn/server/server.conf
+   ```
+
+   
+
+### 设置strongswan
+
+1. 修改/etc/strongswan/strongswan.d/charon/dhcp.conf 配置文件
+
+   ```
+   sed -i  's/load/#load/g' /etc/strongswan/strongswan.d/charon/dhcp.conf
+   ```
+
+2. 清空密钥配置文件
+
+   ```
+   > /etc/strongswan/ipsec.secrets
+   ```
+
+
+
+### 启动strongswan和openvpn服务
+
+```
+systemctl  enable openvpn
+systemctl start openvpn  
+systemctl  status  openvpn
+systemctl enable openvpn-server@server.service
+systemctl start openvpn-server@server.service
+systemctl status openvpn-server@server.service
+
+```
+
+
+
+### 启动Flexgw服务
+
+```
+/etc/init.d/initflexgw 
+```
+
+此代码主要是初始化证书配置。并设置flexgw开机启动。
+
+大约10秒左右，flexgw 就会自动配置好，并启动。启动完毕之后，访问`https://公网IP` 即可看到登录界面。
+
+### 访问flewgw服务
+
+访问登录https://公网|私网IP地址。
+
+登录账户和密码，即为开机账户和密码
+
+
+
+汇总代码如下：
+
+```
+wget https://github.com/Ostaer/FlexGW/releases/download/v1.1/flexgw-1.1.0-1.el7.centos.x86_64.rpm
+sysctl -a | egrep "ipv4.*(accept|send)_redirects" | awk -F "=" '{print $1"= 0"}' >> /etc/sysctl.conf
+sed -i 's/^net.ipv4.ip_forward.*//g' /etc/sysctl.conf
+echo "net.ipv4.ip_forward = 1">> /etc/sysctl.conf
+sysctl -p
+yum makecache fast
+yum install strongswan openvpn zip curl wget
+\cp -fv /usr/local//rc/strongswan.conf /etc/strongswan/strongswan.conf
+\cp -fv /usr/local/flexgw/rc/openvpn.conf /etc/openvpn/server/server.conf
+sed -i  's/load/#load/g' /etc/strongswan/strongswan.d/charon/dhcp.conf
+> /etc/strongswan/ipsec.secrets
+systemctl  enable openvpn
+systemctl start openvpn  
+systemctl enable openvpn-server@server.service
+systemctl start openvpn-server@server.service
+/etc/init.d/initflexgw 
+```
+
