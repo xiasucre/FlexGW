@@ -7,8 +7,27 @@ sysctl -p
 yum makecache fast
 yum install strongswan openvpn zip curl wget
 rpm -ivh flexgw-1.1.0-1.el7.centos.x86_64.rpm
-\cp -fv /usr/local/flexgw/rc/strongswan.conf /etc/strongswan/strongswan.confconf
-\cp -fv /usr/local/flexgw/rc/openvpn.conf /etc/openvpn/server/server.conf
+cat >  /usr/local/flexgw/rc/strongswan.conf <<EOF
+charon {
+    filelog {
+        charon {
+            path = /var/log/strongswan.charon.log
+            time_format = % b % e % T
+            ike_name = yes
+            append = no
+            default = 1
+            flush_line = yes
+        }
+    }
+    plugins {
+        include strongswan.d/charon/*.conf
+        duplicheck {
+            enable = yes
+        }
+    }
+}
+EOF
 sed -i  's/load/#load/g' /etc/strongswan/strongswan.d/charon/dhcp.conf
 > /etc/strongswan/ipsec.secrets
 /etc/init.d/initflexgw 
+
