@@ -5,7 +5,7 @@ sed -i 's/^net.ipv4.ip_forward.*//g' /etc/sysctl.conf
 echo "net.ipv4.ip_forward = 1">> /etc/sysctl.conf
 sysctl -p
 yum makecache fast
-yum install strongswan openvpn zip curl wget
+yum install -y strongswan openvpn zip curl wget
 rpm -ivh flexgw-1.1.0-1.el7.centos.x86_64.rpm
 cat >  /usr/local/flexgw/rc/strongswan.conf <<EOF
 charon {
