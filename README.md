@@ -1,10 +1,10 @@
-Flex GateWay
+Flex OpenVPN
 ============
 
 介绍
 -------
 
-本程序提供了VPN、SNAT 基础服务。
+本程序提供了VPN、SNAT 基础服务； 用户可以通过WEB界面管理用户，下发openvpn配置。
 
 主要提供以下几点功能：
 

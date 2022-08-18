@@ -13,3 +13,4 @@ instance/*
 
 # some private files
 artwork/
+/venv/
