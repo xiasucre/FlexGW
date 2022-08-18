@@ -220,7 +220,7 @@ class VpnServer(object):
             if line.startswith('CLIENT_LIST,%s,' % account_name):
                 data = line.split(',')
                 result.append({'rip': '%s' % data[2], 'vip': '%s' % data[3],
-                              'br': data[4], 'bs': data[5], 'ct': data[7]})
+                              'br': data[4], 'bs': data[5], 'ct': data[8]})
         return result or False
 
     def tunnel_traffic(self, tunnel_name):
